@@ -1,0 +1,236 @@
+<!-- views/analytics.ejs -->
+<%- include('partials/header') %>
+
+<h1 class="mb-4">Analytics Dashboard</h1>
+
+<!-- Hidden element to store analytics data -->
+<script id="analytics-data" type="application/json">
+    <%- JSON.stringify(analytics) %>
+</script>
+
+<div class="row">
+    <!-- Overview Cards -->
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Total Focus Time</h5>
+                <%
+                const totalMinutes = analytics.totalFocusTime || 0;
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                %>
+                <h2 class="display-4"><%= hours %><small class="text-muted">h</small> <%= minutes %><small class="text-muted">m</small></h2>
+                <p class="card-text">Total Focus Time</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Completed Sessions</h5>
+                <h2 class="display-4"><%= analytics.totalSessions || 0 %></h2>
+                <p class="card-text">Pomodoros</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Completion Rate</h5>
+                <h2 class="display-4" id="completion-rate">
+                    <%
+                    const completed = analytics.statusCounts.Completed || 0;
+                    const total = Object.values(analytics.statusCounts).reduce((sum, count) => sum + count, 0);
+                    const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
+                    %>
+                    <%= completionRate %>%
+                </h2>
+                <p class="card-text">Goals Completed</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Three Charts in One Row -->
+<div class="row">
+    <!-- Goal Status Distribution Chart -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Goal Status Distribution</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="goalStatusChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Focus Time Chart -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Weekly Focus Time</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="weeklyFocusChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goal Categories Chart -->
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Goal Categories</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="categoriesChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Productivity Heatmap -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Productivity Heatmap</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">This visualization shows your productivity patterns by hour and day of the week. Darker colors indicate more time spent in focused work.</p>
+
+                <div class="heatmap-container">
+                    <div class="hour-labels">
+                        <% for(let hour = 0; hour < 24; hour++) { %>
+                            <div class="hour-label"><%= hour %>:00</div>
+                        <% } %>
+                    </div>
+                    <div class="heatmap">
+                        <% const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; %>
+                        <% for(let day = 0; day < 7; day++) { %>
+                            <div class="day-row">
+                                <div class="day-label"><%= dayNames[day] %></div>
+                                <% for(let hour = 0; hour < 24; hour++) { %>
+                                    <div class="heatmap-cell" data-day="<%= day %>" data-hour="<%= hour %>" data-value="<%= analytics.heatmapData && analytics.heatmapData[day] ? analytics.heatmapData[day][hour] || 0 : 0 %>">
+                                        <div class="tooltip-content">
+                                            <%= dayNames[day] %>, <%= hour %>:00<br>
+                                            <strong><%= analytics.heatmapData && analytics.heatmapData[day] ? analytics.heatmapData[day][hour] || 0 : 0 %> min</strong> of focus time
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <div class="heatmap-legend mt-3">
+                    <div class="d-flex justify-content-between">
+                        <span>0 min</span>
+                        <span>30 min</span>
+                        <span>60 min</span>
+                        <span>90+ min</span>
+                    </div>
+                    <div class="legend-gradient"></div>
+                </div>
+
+                <div class="mt-3">
+                    <h6>Insights:</h6>
+                    <ul id="heatmap-insights" class="list-group list-group-flush">
+                        <li class="list-group-item">Loading insights...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .heatmap-container {
+        overflow-x: auto;
+        margin-bottom: 20px;
+    }
+
+    .heatmap {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hour-labels {
+        display: flex;
+        margin-bottom: 5px;
+        margin-left: 100px; /* Align with day labels */
+    }
+
+    .hour-label {
+        width: 44px; /* Match exact width of cell + margin */
+        font-size: 0.7rem;
+        text-align: center;
+    }
+
+    .day-row {
+        display: flex;
+        height: 40px;
+        margin-bottom: 4px;
+    }
+
+    .day-label {
+        width: 100px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        padding-right: 10px;
+    }
+
+    .heatmap-cell {
+        width: 40px;
+        height: 40px;
+        margin-right: 4px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .heatmap-cell:hover .tooltip-content {
+        display: block;
+    }
+
+    .tooltip-content {
+        display: none;
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        z-index: 10;
+    }
+
+    .tooltip-content::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+    }
+
+    .legend-gradient {
+        height: 20px;
+        background: linear-gradient(to right, #f8f9fa, #dce3f8, #a4c2f4, #3d85c6);
+        border-radius: 4px;
+        margin-top: 5px;
+    }
+</style>
+
+<!-- Include analytics JavaScript -->
+<script src="/js/analytics.js"></script>
+
+<%- include('partials/footer') %>

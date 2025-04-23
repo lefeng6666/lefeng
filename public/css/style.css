@@ -1,0 +1,226 @@
+/* public/css/style.css */
+
+/* Base styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar styles */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Card styles */
+.card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: 600;
+}
+
+/* Timer styles */
+.timer-display {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+#time-display {
+    font-size: 5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #007bff;
+}
+
+.timer-controls {
+    margin: 1.5rem 0;
+}
+
+.timer-controls .btn {
+    min-width: 100px;
+}
+
+/* Goal styles */
+.table th {
+    font-weight: 600;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.8em;
+}
+
+/* Form styles */
+.form-label {
+    font-weight: 500;
+}
+
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #80bdff;
+}
+
+/* Analytics styles */
+.chart-container {
+    position: relative;
+    height: 250px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #time-display {
+        font-size: 4rem;
+    }
+
+    .timer-controls .btn {
+        min-width: auto;
+        padding: 0.5rem 1rem;
+    }
+
+    .heatmap-container {
+        overflow-x: auto;
+    }
+
+    .day-label {
+        width: 80px;
+    }
+
+    .hour-label {
+        width: 36px;
+    }
+
+    .heatmap-cell {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* Focus animation */
+@keyframes focus-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 123, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+}
+
+.focus-active {
+    animation: focus-pulse 2s infinite;
+}
+
+/* Utility classes */
+.text-success {
+    color: #28a745 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.text-info {
+    color: #17a2b8 !important;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+/* Modal styles */
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.btn-close:focus {
+    box-shadow: none;
+}
+
+/* Landing page styles */
+.landing-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+.landing-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #007bff;
+}
+
+.landing-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #555;
+}
+
+/* Login/Register form styles */
+.auth-card {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+}
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}

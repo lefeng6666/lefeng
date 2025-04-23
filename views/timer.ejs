@@ -1,0 +1,83 @@
+<!-- views/timer.ejs-->
+<%- include('partials/header') %>
+
+<!-- Hidden element to store user data -->
+<div id="user-data" data-user-id="<%= user.id %>" style="display:none;"></div>
+
+<!-- Hidden element to store existing sessions data -->
+<% if (typeof existingSessions !== 'undefined' && existingSessions) { %>
+    <div id="existing-sessions-data" data-sessions='<%- existingSessions %>' style="display:none;"></div>
+<% } %>
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center mb-0">Pomodoro Timer</h3>
+            </div>
+            <div class="card-body text-center">
+                <div class="timer-display my-4">
+                    <h1 id="time-display" class="display-1">25:00</h1>
+                    <p id="status-text" class="lead">Ready to start</p>
+                    <div id="current-goal-display" class="mb-2 py-2 px-3 bg-light rounded">
+                        <small class="text-muted">Current Goal:</small>
+                        <strong id="current-goal-text">None selected</strong>
+                    </div>
+                </div>
+
+                <div class="timer-controls mb-4">
+                    <button id="start-btn" class="btn btn-primary btn-lg me-2">Start</button>
+                    <button id="pause-btn" class="btn btn-warning btn-lg me-2" disabled>Pause</button>
+                    <button id="reset-btn" class="btn btn-danger btn-lg">Reset</button>
+                </div>
+
+                <div class="timer-settings mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="work-minutes" class="form-label">Work Time (minutes)</label>
+                            <input type="number" class="form-control" id="work-minutes" value="25" min="1" max="60">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="break-minutes" class="form-label">Break Time (minutes)</label>
+                            <input type="number" class="form-control" id="break-minutes" value="5" min="1" max="30">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="goal-selection mb-3">
+                    <label for="goal-select" class="form-label">Select a goal to work on (optional)</label>
+                    <select class="form-select" id="goal-select">
+                        <option value="">-- No goal selected --</option>
+                        <% if(typeof goals !== 'undefined' && goals.length > 0) { %>
+                            <% for(let i=0; i<goals.length; i++) { %>
+                                <option value="<%= goals[i].id %>" data-estimated-pomodoros="<%= goals[i].estimated_pomodoros || 1 %>">
+                                    <%= goals[i].title %>
+                                </option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Total Sessions</h5>
+            </div>
+            <div class="card-body">
+                <div id="sessions-container">
+                    <p>Complete a Pomodoro session to see it here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include timer JavaScript -->
+<script src="/js/timer.js"></script>
+
+<%- include('partials/footer') %>

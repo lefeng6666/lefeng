@@ -1,0 +1,104 @@
+# ProFocus - Productivity and Focus Improvement App
+
+ProFocus is a web-based application designed to enhance productivity and focus using the Pomodoro Technique. This app helps users manage time efficiently by breaking work into focused intervals (typically 25 minutes) followed by short breaks.
+
+## Features
+
+- **User Authentication**: Secure signup and login system
+- **Goal Management**: Create, update, and track goals with priorities and deadlines
+- **Pomodoro Timer**: Customizable work and break timers
+- **Progress Tracking**: Track completion of multi-session goals
+- **Analytics Dashboard**: Visualize productivity patterns with charts and heatmaps
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+## Technology Stack
+
+- **Frontend**: HTML, CSS, JavaScript, EJS templates, Bootstrap 5
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL
+- **Authentication**: JWT (JSON Web Tokens)
+- **Data Visualization**: Chart.js
+
+## Project Structure
+
+```
+profocus/
+├── config/             # Configuration files (database, etc.)
+├── controllers/        # Request handlers
+├── middleware/         # Express middleware
+├── models/             # Database models
+├── public/             # Static files
+│   ├── css/            # Stylesheets
+│   ├── js/             # Client-side JavaScript
+│   └── img/            # Images
+├── routes/             # Express routes
+├── views/              # EJS templates
+│   └── partials/       # Reusable view components
+├── .env                # Environment variables
+├── .sql                # Database schema
+├── app.js              # Application entry point
+├── package.json        # Project metadata
+└── README.md           # Documentation
+```
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js (v14+)
+- MySQL database
+
+### Installation
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/yourusername/profocus.git
+   cd profocus
+   ```
+
+2. Install dependencies
+   ```bash
+   npm install
+   ```
+
+3. Configure environment variables
+   - Copy `.env.example` to `.env`
+   - Update database credentials and other settings
+
+4. Initialize the database
+   ```bash
+   mysql -u [username] -p < .sql
+   ```
+
+5. Start the application
+   ```bash
+   npm run dev   # for development with nodemon
+   npm start     # for production
+   ```
+
+6. Access the application at `http://localhost:5000` (or the port specified in your .env file)
+
+## Usage
+
+1. **Registration/Login**: Create an account or log in to access the application
+2. **Dashboard**: View and manage your goals
+3. **Goal Creation**: Add new goals with title, description, category, priority, deadline, and estimated time
+4. **Timer**: Use the Pomodoro timer to work on your goals
+5. **Analytics**: Check your productivity statistics and patterns
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgements
+
+- The Pomodoro Technique was developed by Francesco Cirillo
+- Thanks to all contributors who have helped shape this project
